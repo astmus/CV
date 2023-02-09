@@ -13,6 +13,7 @@ namespace DataAccess.DataBase
 {
 	public class CvDbContext : DbContext
 	{
+		
 		public CvDbContext()
 		{
 
@@ -29,7 +30,8 @@ namespace DataAccess.DataBase
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);			
+			base.OnModelCreating(modelBuilder);
+			
 			modelBuilder.Entity<Customer>(entity =>
 			{
 				entity.HasKey(e => e.CustomerId);

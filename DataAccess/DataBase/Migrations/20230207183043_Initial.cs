@@ -14,7 +14,7 @@ namespace DataAccess.DataBase.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false)
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CompanyName = table.Column<string>(type: "nvarchar(450)", nullable: true),

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Entities
 {
 	public class Customer
 	{
-		public uint CustomerId { get; set; }
-		public string? Name { get; set; }
+		public int CustomerId { get; set; }
+		public string Name { get; set; }
+		[DisplayName("Company Name")]
 		public string? CompanyName { get; set; }
 		public string? Phone { get; set; }
 		public string? Email { get; set; }

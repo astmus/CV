@@ -1,3 +1,5 @@
+using Entities;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -28,6 +30,21 @@ namespace WebApi.Controllers
 				Summary = Summaries[Random.Shared.Next(Summaries.Length)]
 			})
 			.ToArray();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddOrEdit([Bind("EmployeeId,FullName,EmpCode,Position,OfficeLocation")] Customer employee)
+		{
+			if (ModelState.IsValid)
+			{
+				if (employee.CustomerId == 0)
+				//	_context.Add(employee);
+				//else
+				//	_context.Update(employee);
+				//await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));
+			}
+			return Ok(employee);
 		}
 	}
 }

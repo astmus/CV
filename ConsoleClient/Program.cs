@@ -5,8 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Org.BouncyCastle.Crypto.Agreement.Kdf;
-
 namespace ConsoleClient
 {
 	internal class Program

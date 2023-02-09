@@ -1,4 +1,8 @@
 
+using DataAccess;
+
+using Domain;
+
 namespace WebApi
 {
 	public class Program
@@ -8,11 +12,13 @@ namespace WebApi
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
-
+			
 			builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+			builder.Services.AddDomainCore();
+			builder.Services.AddDbDataAccess(builder.Configuration.GetConnectionString("Default"));
 
 			var app = builder.Build();
 
@@ -29,7 +35,6 @@ namespace WebApi
 
 
 			app.MapControllers();
-
 			app.Run();
 		}
 	}
