@@ -1,4 +1,6 @@
-﻿using Entities;
+﻿using Domain.Customers.Queries;
+
+using Entities;
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,8 @@ namespace Domain.Interfaces
 	{
 		public Task<IRequestResult<Customer>> CreateCustomerAsync(string name, string companyName, string email, string phone, CancellationToken cancel = default);
 		public Task<int> GetCustomersCountAsync(string name, string companyName, string email, string phone, CancellationToken cancel = default);
-		public Task<IEnumerable<Customer>> GetCustomersPageAsync(string name, string companyName, string email, string phone, int page, int pageCount, string sortBy, int sortDesc, CancellationToken cancel = default);
+		//public Task<IEnumerable<Customer>> GetCustomersPageAsync(string name, string companyName, string email, string phone, int page, int pageCount, string sortBy, int sortDesc, CancellationToken cancel = default);
+		public  Task<IEnumerable<Customer>> GetCustomersPageAsync(GetCustomersPageQuery query, CancellationToken cancel = default);
 		public Task<int> DeleteCustomerAsync(int customerId, CancellationToken cancel = default);
 		public Task<int> UpdateCustomerAsync(int customerId, string name, string companyName, string email, string phone, CancellationToken cancel = default);
 	}

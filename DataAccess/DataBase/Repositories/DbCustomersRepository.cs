@@ -1,5 +1,6 @@
 ﻿using DataAccess.Response;
 
+using Domain.Customers.Queries;
 using Domain.Interfaces;
 
 using Entities;
@@ -14,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DataBase.Repositories
 {
-	internal class CustomersRepository : ICustomersRepository
+	internal class DbCustomersRepository : ICustomersRepository
 	{
 		CvDbContext context;
-		public CustomersRepository(CvDbContext dbContext)
+		public DbCustomersRepository(CvDbContext dbContext)
 		{
 			context = dbContext;
 		}
@@ -60,10 +61,10 @@ namespace DataAccess.DataBase.Repositories
 			}			
 			return result;
 		}
-
-		public async Task<IEnumerable<Customer>> GetCustomersPageAsync(string name, string companyName, string email, string phone, int page, int pageCount, string sortBy, int sortDesc, CancellationToken cancel = default)
+		
+		public async Task<IEnumerable<Customer>> GetCustomersPageAsync(GetCustomersPageQuery query, CancellationToken cancel = default)
 		{
-			var result = await context.Customers.FromSqlInterpolated($"FindCustomers {name ?? ""}, {companyName ?? ""}, {email ?? ""}, {phone ?? ""}, {page}, {pageCount}, {sortBy ?? ""}, {sortDesc}").ToListAsync(cancel);
+			var result = await context.Customers.FromSqlInterpolated($"FindCustomers {query.Name ?? ""}, {query.CompanyName ?? ""}, {query.Email ?? ""}, {query.Phone ?? ""}, {query.Page}, {query.PageCount}, {query.SortBy ?? ""}, {query.SortDesc}").ToListAsync(cancel);
 			return result;
 		}
 

@@ -37,14 +37,17 @@ namespace WebApi.Controllers
 			return Ok(await Mediator.Send(command));
 		}
 		[HttpGet("[action]")]
-		public async Task<int> GetCustomersCount(string name = null, string сompanyName = null, string email = null, string phone = null)
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+		public async Task<IActionResult> GetCustomersCount(string name = null, string сompanyName = null, string email = null, string phone = null)
 		{
-			return await Mediator.Send(new GetCustomersCountQuery(name, сompanyName, email, phone));
+			return Ok(await Mediator.Send(new GetCustomersCountQuery(name, сompanyName, email, phone)));
 		}
-		[HttpGet("[action]")]
-		public async Task<IEnumerable<Customer>> GetCustomersPage(int page, int pageCount, string name = null, string companyName = null, string email = null, string phone = null,  string sortBy = null, int sortDesc = 0)
-		{
-			return await Mediator.Send(new GetCustomersPageQuery(name, companyName, email, phone, page, pageCount, sortBy, sortDesc));
+		
+		[HttpGet("[action]")]		
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Customer>))]
+		public async Task<IActionResult> GetCustomersPageQuery([FromQuery] GetCustomersPageQuery query)
+		{			
+			return Ok(await Mediator.Send(query));
 		}
 	}
 }

@@ -1,11 +1,16 @@
 ﻿using DataAccess.DataBase;
 using DataAccess.DataBase.Repositories;
+using DataAccess.Rest;
 
 using Domain.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Newtonsoft.Json;
+
+using Refit;
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +28,24 @@ namespace DataAccess
 				options.UseSqlServer(
 					connectionString,
 					b => b.MigrationsAssembly(typeof(CvDbContext).Assembly.FullName)));
-			services.AddScoped<ICustomersRepository, CustomersRepository>();
+			services.AddScoped<ICustomersRepository, DbCustomersRepository>();
 		}
+		public static IServiceCollection AddRestDataAccess(this IServiceCollection services, string apiAddress)
+		{
+			services.AddRefitClient<ICustomerApi>(RefitSettings).ConfigureHttpClient(client=> client.BaseAddress = new Uri(apiAddress));
+			services.AddTransient<ICustomersRepository, RestCustomersRepository>();
+			return services;
+		}
+		static readonly RefitSettings RefitSettings = new RefitSettings()
+		{
+			Buffered = true,
+			ContentSerializer = new NewtonsoftJsonContentSerializer(
+					new JsonSerializerSettings
+					{
+						NullValueHandling = NullValueHandling.Ignore,
+						ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+						MissingMemberHandling = MissingMemberHandling.Ignore
+					})
+		};
 	}
 }

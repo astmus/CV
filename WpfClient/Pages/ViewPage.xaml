@@ -1,0 +1,117 @@
+﻿<pages:BasePage x:Class="WpfClient.Pages.ViewPage"
+	            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:ui="http://schemas.modernwpf.com/2019"             
+                xmlns:pages="clr-namespace:WpfClient.Pages" 
+				 xmlns:viewmodels="clr-namespace:WpfClient.ViewModels"
+				 mc:Ignorable="d"
+				 d:DesignHeight="768" d:DesignWidth="1280"				
+				 d:DataContext="{d:DesignInstance Type=viewmodels:ViewPageViewModel, IsDesignTimeCreatable=False}" 				
+				>
+	<pages:BasePage.Resources>
+		<ControlTemplate x:Key="validationTemplate">
+			<DockPanel>
+				<TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+				<AdornedElementPlaceholder/>
+			</DockPanel>
+		</ControlTemplate>
+		<x:Array x:Key="intArray" Type="sys:Int32"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib">
+			<sys:Int32>10</sys:Int32>
+			<sys:Int32>20</sys:Int32>
+			<sys:Int32>30</sys:Int32>
+			<sys:Int32>40</sys:Int32>
+			<sys:Int32>50</sys:Int32>
+			<sys:Int32>60</sys:Int32>
+			<sys:Int32>70</sys:Int32>
+			<sys:Int32>80</sys:Int32>
+			<sys:Int32>90</sys:Int32>
+		</x:Array>
+		<x:Array x:Key="strArray" Type="sys:String"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib">
+			<sys:String>Name</sys:String>
+			<sys:String>CompanyName</sys:String>
+			<sys:String>Email</sys:String>
+			<sys:String>Phone</sys:String>
+		</x:Array>
+	</pages:BasePage.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
+		</Grid.RowDefinitions>
+		<StackPanel Margin="4" Orientation="Horizontal">
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Count"/>
+					<ComboBox ItemsSource="{StaticResource ResourceKey=intArray}" SelectedValue="{Binding Path=PageItemsCount, Mode=TwoWay}">
+					</ComboBox>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Name"/>
+					<TextBox Text="{Binding Path=Name}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Company name"/>
+					<TextBox Text="{Binding Path=CompanyName}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Email"/>
+					<TextBox Text="{Binding Path=Email}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Phone"/>
+					<TextBox Text="{Binding Path=Phone}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<Button Content="Load" VerticalAlignment="Bottom" Command="{Binding Path=LoadCommand}"/>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Sort by"/>
+					<ComboBox ItemsSource="{StaticResource ResourceKey=strArray}" SelectedValue="{Binding Path=SortBy}">
+					</ComboBox>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Descending"/>
+					<CheckBox IsChecked="{Binding SortDesc}"/>
+				</StackPanel>
+			</Border>
+		</StackPanel>
+		<DataGrid Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Customers,Mode=TwoWay}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible"
+            HeadersVisibility="All">
+			<DataGrid.Columns>
+				<DataGridTextColumn Width="*" Binding="{Binding Path=Name}" Header="Name"  />
+				<DataGridTextColumn Header="Company Name" Binding="{Binding Path=CompanyName}" Width="0.8*"/>
+				<DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" Width="0.8*"/>
+				<DataGridTextColumn Header="Phone" Binding="{Binding Path=Phone}" Width="0.8*"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Grid Grid.Row="2">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+			<TextBlock Padding="5" Text="{Binding  PageInfo.ItemsCount, StringFormat='Total items:{0:F0}'}"/>
+			<TextBlock Padding="5" Text="{Binding  PageInfo.PagesCount, StringFormat='Pages count:{0:F0}'}"/>
+			<TextBlock Padding="5" Text="{Binding  PageInfo.PageNumber, StringFormat='Current Page:{0:F0}'}"/>
+				<ui:HyperlinkButton Padding="5" Content="Prev" Command="{Binding PrevPageCommand}"></ui:HyperlinkButton>
+
+				<ui:HyperlinkButton Padding="5" Content="Next" Command="{Binding NextPageCommand}"></ui:HyperlinkButton>
+			</StackPanel>
+		</Grid>
+	</Grid>
+</pages:BasePage>
