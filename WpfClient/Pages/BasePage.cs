@@ -31,9 +31,9 @@ namespace WpfClient.Pages
 		{			
 
 			ViewModel.ModalWindowRequired += ViewModel_ModalWindowRequired;
-			ViewModel.InfoDialogueRequired += ViewModel_InfoDialogueRequired;
-			ViewModel.ConfirmDialogueRequired += ViewModel_ConfirmDialogueRequired;
-			ViewModel.ErrorDialogueRequired += ViewModel_ErrorDialogueRequired;
+			ViewModel.InfoDialogRequired += ViewModel_InfoDialogueRequired;
+			ViewModel.ConfirmDialogRequired += ViewModel_ConfirmDialogueRequired;
+			ViewModel.ErrorDialogRequired += ViewModel_ErrorDialogueRequired;
 
 			BackgroundTask.QueueTask(async (cancellationToken) =>
 			{
@@ -56,9 +56,9 @@ namespace WpfClient.Pages
 			Debug.Assert(ViewModel != null);
 
 			ViewModel.ModalWindowRequired -= ViewModel_ModalWindowRequired;
-			ViewModel.InfoDialogueRequired -= ViewModel_InfoDialogueRequired;
-			ViewModel.ConfirmDialogueRequired -= ViewModel_ConfirmDialogueRequired;
-			ViewModel.ErrorDialogueRequired -= ViewModel_ErrorDialogueRequired;
+			ViewModel.InfoDialogRequired -= ViewModel_InfoDialogueRequired;
+			ViewModel.ConfirmDialogRequired -= ViewModel_ConfirmDialogueRequired;
+			ViewModel.ErrorDialogRequired -= ViewModel_ErrorDialogueRequired;
 
 			BackgroundTask.QueueTask(async (cancellationToken) =>
 			{
@@ -91,7 +91,7 @@ namespace WpfClient.Pages
 
 			_contentDialog = new ContentDialog
 			{
-				Content = new TextBlock { Text = model.Message, FontSize = 24, TextWrapping = TextWrapping.Wrap },
+				Content = new TextBlock { Text = model.Message, FontSize = 16, TextWrapping = TextWrapping.Wrap },
 				IsSecondaryButtonEnabled = false,
 				IsPrimaryButtonEnabled = true,
 				PrimaryButtonText = model.ApplyButtonText,
@@ -106,7 +106,7 @@ namespace WpfClient.Pages
 				_contentDialog.CloseButtonCommand = new UICommand(model.CancelCallback);
 
 			if (!string.IsNullOrEmpty(model.Title))
-				_contentDialog.Title = new TextBlock { Text = model.Title, FontSize = 36, FontWeight = FontWeights.Bold };
+				_contentDialog.Title = new TextBlock { Text = model.Title, FontSize = 24, FontWeight = FontWeights.Bold };
 
 			await _contentDialog.ShowAsync();
 		}
@@ -117,7 +117,7 @@ namespace WpfClient.Pages
 
 			_contentDialog = new ContentDialog
 			{
-				Content = new TextBlock { Text = model.Message, FontSize = 24, TextWrapping = TextWrapping.Wrap },
+				Content = new TextBlock { Text = model.Message, FontSize = 16, TextWrapping = TextWrapping.Wrap },
 				IsSecondaryButtonEnabled = false,
 				IsPrimaryButtonEnabled = false,
 				CloseButtonText = model.CloseButtonText,
@@ -127,7 +127,7 @@ namespace WpfClient.Pages
 			_contentDialog.Closed += (s, e) => _contentDialog = null;
 
 			if (!string.IsNullOrEmpty(model.Title))
-				_contentDialog.Title = new TextBlock { Text = model.Title, FontSize = 36, FontWeight = FontWeights.Bold };
+				_contentDialog.Title = new TextBlock { Text = model.Title, FontSize = 24, FontWeight = FontWeights.Bold };
 
 			await _contentDialog.ShowAsync();
 		}
@@ -138,8 +138,8 @@ namespace WpfClient.Pages
 
 			_contentDialog = new ContentDialog
 			{
-				Title = new TextBlock { Text = "Error", FontSize = 36, FontWeight = FontWeights.Bold },
-				Content = new TextBlock { Text = model.Message, FontSize = 24, TextWrapping = TextWrapping.Wrap },
+				Title = new TextBlock { Text = "Error", FontSize = 24, FontWeight = FontWeights.Bold },
+				Content = new TextBlock { Text = model.Message, FontSize = 16, TextWrapping = TextWrapping.Wrap },
 				IsSecondaryButtonEnabled = false,
 				IsPrimaryButtonEnabled = false,
 				CloseButtonText = model.CloseButtonText,

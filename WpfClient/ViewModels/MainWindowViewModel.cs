@@ -18,7 +18,7 @@ namespace WpfClient.ViewModels
 	public class MainWindowViewModel : BasePageViewModel
 	{
 		#region Fields
-		//private readonly IMediator _mediator;
+		
 		private readonly IPageNavigateProvider pageNavigator;
 		private readonly ICustomersRepository repository;
 
@@ -35,9 +35,8 @@ namespace WpfClient.ViewModels
 		#endregion
 
 
-		public MainWindowViewModel(/*IMediator mediator*/IPageNavigateProvider pageProvider, ICustomersRepository qustomers)
-		{
-			//_mediator = mediator;		
+		public MainWindowViewModel(IPageNavigateProvider pageProvider, ICustomersRepository qustomers)
+		{	
 			pageNavigator = pageProvider;
 			repository = qustomers;
 			PageViewModel = this;
@@ -57,13 +56,12 @@ namespace WpfClient.ViewModels
 
 				ViewPage page = pageNavigator.NavigateToPage<ViewPage>();
 				page.ViewModel[nameof(totalCount)] = totalCount;
-
 			}
 			catch (Exception ex)
 			{
-
-				IsInProgress = false;
+				OnCommandException(ex);	
 			}
+			finally { IsInProgress = false; }
 		}
 		
 	}

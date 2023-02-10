@@ -16,7 +16,6 @@ namespace WpfClient.Pages
 		public ViewPage(ViewPageViewModel viewModel) : base(viewModel)
 		{
 			InitializeComponent();
-
 		}		
 	}
 }

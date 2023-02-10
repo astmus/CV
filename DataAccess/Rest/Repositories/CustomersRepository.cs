@@ -1,6 +1,7 @@
 ﻿using DataAccess.Response;
 using DataAccess.Rest;
 
+using Domain.Customers.Commands;
 using Domain.Customers.Queries;
 using Domain.Interfaces;
 
@@ -25,26 +26,16 @@ namespace DataAccess.DataBase.Repositories
 		}
 		public async  Task<IRequestResult<Customer>> CreateCustomerAsync(string name, string companyName, string email, string phone, CancellationToken cancel = default)
 		{
-
-			//var customer = await api.Customers.Where(a => a.Name == name).FirstOrDefaultAsync();
-			//if (customer == null)
-			//{
-			//	var result = await api.Customers.AddAsync(new Customer() { Name = name, CompanyName = companyName, Email = email, Phone = phone }, cancel);
-			//	await api.SaveChangesAsync(cancel);
-			//	return new Result<Customer>(result.Entity);
-			//}
-			//else
-				return await Task.FromResult(new Result<Customer>(Success: false, Message: $"Customer with name {name} already exist"));
+			
+			var result = await api.CreateCustomer(new CreateCustomerCommand(name, companyName, email, phone));
+			return result;
 
 		}
 
-		public Task<int> DeleteCustomerAsync(int customerId, CancellationToken cancel = default)
-		{
-			//var customer = await api.Customers.Where(a => a.CustomerId == customerId).FirstOrDefaultAsync();
-			//if (customer == null) return default;
-			//api.Customers.Remove(customer);
-			//await api.SaveChangesAsync();
-			return Task.FromResult(customerId);
+		public async Task<int> DeleteCustomerAsync(int customerId, CancellationToken cancel = default)
+		{			
+			var deleted = await api.DeleteCustomerCommand(customerId);
+			return deleted;
 		}
 
 		public async Task<int> GetCustomersCountAsync(string name, string companyName, string email, string phone, CancellationToken cancel = default)
@@ -52,29 +43,17 @@ namespace DataAccess.DataBase.Repositories
 			var count = await api.GetCustomersCount(name, companyName, email, phone);
 			return count; 
 		}
-
 		
 		public async Task<IEnumerable<Customer>> GetCustomersPageAsync(GetCustomersPageQuery query, CancellationToken cancel = default)
 		{
-			var result = await api.GetCustomersPageQuery(query);// .Customers.FromSqlInterpolated($"FindCustomers {name ?? ""}, {companyName ?? ""}, {email ?? ""}, {phone ?? ""}, {page}, {pageCount}, {sortBy ?? ""}, {sortDesc}").ToListAsync(cancel);
+			var result = await api.GetCustomersPageQuery(query);
 			return result;
-		}
+		}		
 
-		public Task<IEnumerable<Customer>> GetCustomersPageAsync(string name, string companyName, string email, string phone, int page, int pageCount, string sortBy, int sortDesc, CancellationToken cancel = default)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<int> UpdateCustomerAsync(int customerId , string name, string companyName, string email, string phone, CancellationToken cancel = default)
-		{
-			//var customer = await api.Customers.Where(a => a.CustomerId == customerId).FirstOrDefaultAsync();
-			//if (customer == null) return default;
-			//customer.Name = name;
-			//customer.CompanyName = companyName;
-			//customer.Email = email;
-			//customer.Phone = phone;
-			//await api.SaveChangesAsync();
-			return Task.FromResult(customerId);
+		public async Task<int> UpdateCustomerAsync(int customerId , string name, string companyName, string email, string phone, CancellationToken cancel = default)
+		{			
+			var result = await api.Update(customerId, new UpdateCustomerCommand(customerId, name, companyName, email, phone));
+			return result;
 		}
 	}
 }

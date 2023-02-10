@@ -15,8 +15,13 @@ namespace WpfClient.ViewModels
     {
 		private readonly ConcurrentDictionary<string, object> parameters = new ConcurrentDictionary<string, object>();
 		public object this[string index]{
-            get 
-                => parameters.GetOrAdd(index, new { });
+            get
+            {
+                object res;
+                if (parameters.TryGetValue(index, out res))
+                    return res;
+                else return default;
+             }
             set 
                 => parameters.AddOrUpdate(index, value, (s, o) => value);
 		}
@@ -36,11 +41,11 @@ namespace WpfClient.ViewModels
 
 		public event EventHandler<Window> ModalWindowRequired;
 
-        public event EventHandler<InfoDialogModel> InfoDialogueRequired;
+        public event EventHandler<InfoDialogModel> InfoDialogRequired;
 
-        public event EventHandler<ErrorDialogModel> ErrorDialogueRequired;
+        public event EventHandler<ErrorDialogModel> ErrorDialogRequired;
 
-        public event EventHandler<ConfirmDialogModel> ConfirmDialogueRequired;
+        public event EventHandler<ConfirmDialogModel> ConfirmDialogRequired;
 
 		#endregion
 
@@ -80,24 +85,24 @@ namespace WpfClient.ViewModels
             ModalWindowRequired?.Invoke(this, modalWindow);
         }
 
-        protected void RaiseInfoDialogueRequired(InfoDialogModel model)
+        protected void RaiseInfoDialogRequired(InfoDialogModel model)
         {
-            Debug.Assert(InfoDialogueRequired != null);
+            Debug.Assert(InfoDialogRequired != null);
 
-            InfoDialogueRequired?.Invoke(this, model);
+            InfoDialogRequired?.Invoke(this, model);
         }
-        protected void RaiseConfirmDialogueRequired(ConfirmDialogModel model)
+        protected void RaiseConfirmDialogRequired(ConfirmDialogModel model)
         {
-            Debug.Assert(ConfirmDialogueRequired != null);
+            Debug.Assert(ConfirmDialogRequired != null);
 
-            ConfirmDialogueRequired?.Invoke(this, model);
+            ConfirmDialogRequired?.Invoke(this, model);
         }
 
-        protected void RaiseErrorDialogueRequired(ErrorDialogModel model)
+        protected void RaiseErrorDialogRequired(ErrorDialogModel model)
         {
-            Debug.Assert(ErrorDialogueRequired != null);
+            Debug.Assert(ErrorDialogRequired != null);
 
-            ErrorDialogueRequired?.Invoke(this, model);
+            ErrorDialogRequired?.Invoke(this, model);
         }
 
         protected void OnCommandException(Exception ex) 

@@ -7,10 +7,45 @@
                 xmlns:pages="clr-namespace:WpfClient.Pages" 
 				 xmlns:viewmodels="clr-namespace:WpfClient.ViewModels"
 				 mc:Ignorable="d"
-				 d:DesignHeight="768" d:DesignWidth="1280"
+				 d:DesignHeight="300" d:DesignWidth="400"
 				
 				 d:DataContext="{d:DesignInstance Type=viewmodels:EditPageViewModel, IsDesignTimeCreatable=False}" 				
 				>
 	<Grid>
+		<StackPanel Margin="4" Orientation="Vertical">
+			
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Name"/>
+					<TextBox Text="{Binding Path=CustomerData.Name}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Company name"/>
+					<TextBox Text="{Binding Path=CustomerData.CompanyName}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Email"/>
+					<TextBox Text="{Binding Path=CustomerData.Email}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<Border Padding="5">
+				<StackPanel Orientation="Vertical">
+					<Label Content="Phone"/>
+					<TextBox Text="{Binding Path=CustomerData.Phone}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+				</StackPanel>
+			</Border>
+			<StackPanel Orientation="Horizontal">
+			<Border Padding="5">
+				<Button Content="Submit" Command="{Binding Path=SubmitCommand}" CommandParameter="{Binding CustomerData}"/>
+			</Border>
+			<Border Padding="5">
+				<Button Content="Cancel"  Command="{Binding Path=CancelCommand}"/>
+			</Border>
+			</StackPanel>
+		</StackPanel>
 	</Grid>
 </pages:BasePage>

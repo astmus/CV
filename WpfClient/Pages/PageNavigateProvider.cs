@@ -28,7 +28,7 @@ namespace WpfClient.Pages
 		public T NavigateToPage<T>() where T : BasePage
 		{
 			T Page = services.GetRequiredService<T>();
-			rooViewModel.PageViewModel = Page.ViewModel;
+			rooViewModel.PageViewModel = Page.ViewModel;			
 			var navigationTarget = contentFrame.Navigate(Page);
 			return Page;
 		}
@@ -42,6 +42,5 @@ namespace WpfClient.Pages
 			contentFrame.Navigate(Page);
 			return Page;
 		}
-
 	}
 }

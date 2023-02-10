@@ -5,12 +5,14 @@
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:ui="http://schemas.modernwpf.com/2019"             
                 xmlns:pages="clr-namespace:WpfClient.Pages" 
-				 xmlns:viewmodels="clr-namespace:WpfClient.ViewModels"
-				 mc:Ignorable="d"
+				 xmlns:viewmodels="clr-namespace:WpfClient.ViewModels" 
+				xmlns:converters="clr-namespace:WpfClient.Converters"
+				mc:Ignorable="d"
 				 d:DesignHeight="768" d:DesignWidth="1280"				
 				 d:DataContext="{d:DesignInstance Type=viewmodels:ViewPageViewModel, IsDesignTimeCreatable=False}" 				
 				>
 	<pages:BasePage.Resources>
+		<converters:NullToVisibilityConverter x:Key="NullVisibleConverter"/>
 		<ControlTemplate x:Key="validationTemplate">
 			<DockPanel>
 				<TextBlock Foreground="Red" FontSize="20">!</TextBlock>
@@ -93,24 +95,40 @@
 					<CheckBox IsChecked="{Binding SortDesc}"/>
 				</StackPanel>
 			</Border>
+			<Border Padding="5">
+				<Button Content="Create" 
+						VerticalAlignment="Bottom" Command="{Binding Path=CreateCustomerCommand}" CommandParameter="{Binding CurrentSelected}"/>
+			</Border>
+			<Border Padding="5">
+				<Button Content="Delete" Background="OrangeRed" Visibility="{Binding TargetNullValue=False, 
+					Path=CurrentSelected,UpdateSourceTrigger=PropertyChanged, 
+					Converter={StaticResource NullVisibleConverter}}" 
+						VerticalAlignment="Bottom" Command="{Binding Path=DeleteCustomerCommand}" CommandParameter="{Binding CurrentSelected}"/>
+			</Border>
+			<Border Padding="5">
+				<Button Content="Edit" Background="ForestGreen" Visibility="{Binding TargetNullValue=False, 
+					Path=CurrentSelected,UpdateSourceTrigger=PropertyChanged, 
+					Converter={StaticResource NullVisibleConverter}}" 
+						VerticalAlignment="Bottom" Command="{Binding Path=EditCustomerCommand}" CommandParameter="{Binding CurrentSelected}"/>
+			</Border>
 		</StackPanel>
-		<DataGrid Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Customers,Mode=TwoWay}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible"
-            HeadersVisibility="All">
+		<DataGrid Grid.Row="1" HorizontalAlignment="Stretch" SelectedItem="{Binding Path=CurrentSelected}" ItemsSource="{Binding Path=Customers,Mode=TwoWay}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible"
+            HeadersVisibility="All" CanUserAddRows="False">
 			<DataGrid.Columns>
-				<DataGridTextColumn Width="*" Binding="{Binding Path=Name}" Header="Name"  />
-				<DataGridTextColumn Header="Company Name" Binding="{Binding Path=CompanyName}" Width="0.8*"/>
-				<DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" Width="0.8*"/>
-				<DataGridTextColumn Header="Phone" Binding="{Binding Path=Phone}" Width="0.8*"/>
+				<DataGridTextColumn Width="*" Binding="{Binding Path=Name}" Header="Name" IsReadOnly="True" />
+				<DataGridTextColumn Header="Company Name" Binding="{Binding Path=CompanyName}" IsReadOnly="True" Width="0.8*"/>
+				<DataGridTextColumn Header="Email" Binding="{Binding Path=Email}" IsReadOnly="True" Width="0.8*"/>
+				<DataGridTextColumn Header="Phone" Binding="{Binding Path=Phone}" IsReadOnly="True" Width="0.8*"/>
 			</DataGrid.Columns>
 		</DataGrid>
 		<Grid Grid.Row="2">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-			<TextBlock Padding="5" Text="{Binding  PageInfo.ItemsCount, StringFormat='Total items:{0:F0}'}"/>
-			<TextBlock Padding="5" Text="{Binding  PageInfo.PagesCount, StringFormat='Pages count:{0:F0}'}"/>
-			<TextBlock Padding="5" Text="{Binding  PageInfo.PageNumber, StringFormat='Current Page:{0:F0}'}"/>
-				<ui:HyperlinkButton Padding="5" Content="Prev" Command="{Binding PrevPageCommand}"></ui:HyperlinkButton>
+				<TextBlock Padding="5" FontSize="16" Text="{Binding  PageInfo.ItemsCount, StringFormat='Total items:{0:F0}'}"/>
+				<TextBlock Padding="5" FontSize="16" Text="{Binding  PageInfo.PagesCount, StringFormat='Pages count:{0:F0}'}"/>
+				<TextBlock Padding="5" FontSize="16" Text="{Binding  PageInfo.PageNumber, StringFormat='Current Page:{0:F0}'}"/>
+				<ui:HyperlinkButton Padding="3" FontSize="16" Content="Prev" Command="{Binding PrevPageCommand}"></ui:HyperlinkButton>
 
-				<ui:HyperlinkButton Padding="5" Content="Next" Command="{Binding NextPageCommand}"></ui:HyperlinkButton>
+				<ui:HyperlinkButton Padding="3" FontSize="16" Content="Next" Command="{Binding NextPageCommand}"></ui:HyperlinkButton>
 			</StackPanel>
 		</Grid>
 	</Grid>

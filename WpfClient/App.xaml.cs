@@ -40,7 +40,7 @@ namespace WpfClient
 			services.AddTransient<EditPage>();
 			services.AddTransient<EditPageViewModel>();
 			services.AddTransient<ViewPage>();
-			services.AddTransient<ViewPageViewModel>();
+			services.AddSingleton<ViewPageViewModel>();
 			services.AddSingleton<BackgroundTask>();
 			services.AddSingleton<IPageNavigateProvider, PageNavigateProvider>();
 			Services = services.BuildServiceProvider();			

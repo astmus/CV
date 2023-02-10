@@ -11,7 +11,6 @@ namespace WpfClient.Pages
 {
 	public interface IPageNavigateProvider
 	{
-		
 		T NavigateToPage<T>() where T : BasePage;
 
 		BasePage NavigateToPage(Type pageType);

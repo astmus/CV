@@ -16,11 +16,9 @@ namespace WebApi.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(CreateCustomerCommand command)
 		{
-			var result = await Mediator.Send(command);
-			if (result.Success)
-				return Ok(result.Response);
-			else
-				return BadRequest(result);
+			var result = await Mediator.Send(command);			
+			return Ok(result);
+			
 		}
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id)
