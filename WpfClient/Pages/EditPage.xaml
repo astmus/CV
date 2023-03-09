@@ -5,15 +5,29 @@
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:ui="http://schemas.modernwpf.com/2019"             
                 xmlns:pages="clr-namespace:WpfClient.Pages" 
-				 xmlns:viewmodels="clr-namespace:WpfClient.ViewModels"
-				 mc:Ignorable="d"
+				 xmlns:viewmodels="clr-namespace:WpfClient.ViewModels" xmlns:validations="clr-namespace:WpfClient.Validations" xmlns:converters="clr-namespace:WpfClient.Converters"
+				mc:Ignorable="d"
 				 d:DesignHeight="300" d:DesignWidth="400"
 				
 				 d:DataContext="{d:DesignInstance Type=viewmodels:EditPageViewModel, IsDesignTimeCreatable=False}" 				
 				>
+	<pages:BasePage.Resources>
+		<ControlTemplate x:Key="validationTemplate">
+			<Border BorderThickness="2" BorderBrush="OrangeRed">
+				<TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+			</Border>
+		</ControlTemplate>
+		<Style x:Key="textStyleTextBox" TargetType="TextBox">
+			<Style.Triggers>
+				<Trigger Property="Validation.HasError" Value="true">
+					<Setter Property="ToolTip" Value="{Binding Binding.Validation.Errors, RelativeSource={RelativeSource Self}}" />
+				</Trigger>
+			</Style.Triggers>
+		</Style>		
+	</pages:BasePage.Resources>
 	<Grid>
 		<StackPanel Margin="4" Orientation="Vertical">
-			
+
 			<Border Padding="5">
 				<StackPanel Orientation="Vertical">
 					<Label Content="Name"/>
@@ -29,7 +43,16 @@
 			<Border Padding="5">
 				<StackPanel Orientation="Vertical">
 					<Label Content="Email"/>
-					<TextBox Text="{Binding Path=CustomerData.Email}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+					<TextBox x:Name="email"
+						VerticalAlignment="Stretch" VerticalContentAlignment="Center">
+						<TextBox.Text>
+							<Binding Path="CustomerData.Email" UpdateSourceTrigger="PropertyChanged" >
+								<Binding.ValidationRules>
+									<validations:EmailRule/>
+								</Binding.ValidationRules>
+							</Binding>
+						</TextBox.Text>
+					</TextBox>
 				</StackPanel>
 			</Border>
 			<Border Padding="5">
@@ -39,12 +62,12 @@
 				</StackPanel>
 			</Border>
 			<StackPanel Orientation="Horizontal">
-			<Border Padding="5">
-				<Button Content="Submit" Command="{Binding Path=SubmitCommand}" CommandParameter="{Binding CustomerData}"/>
-			</Border>
-			<Border Padding="5">
-				<Button Content="Cancel"  Command="{Binding Path=CancelCommand}"/>
-			</Border>
+				<Border Padding="5">
+					<Button Content="Submit" IsEnabled="{Binding ElementName=email, ValidatesOnNotifyDataErrors=False, ValidatesOnDataErrors=True}" Command="{Binding Path=SubmitCommand}" CommandParameter="{Binding CustomerData}"/>
+				</Border>
+				<Border Padding="5">
+					<Button Content="Cancel"  Command="{Binding Path=CancelCommand}"/>
+				</Border>
 			</StackPanel>
 		</StackPanel>
 	</Grid>

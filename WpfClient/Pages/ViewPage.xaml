@@ -13,12 +13,7 @@
 				>
 	<pages:BasePage.Resources>
 		<converters:NullToVisibilityConverter x:Key="NullVisibleConverter"/>
-		<ControlTemplate x:Key="validationTemplate">
-			<DockPanel>
-				<TextBlock Foreground="Red" FontSize="20">!</TextBlock>
-				<AdornedElementPlaceholder/>
-			</DockPanel>
-		</ControlTemplate>
+		
 		<x:Array x:Key="intArray" Type="sys:Int32"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib">

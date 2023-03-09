@@ -1,4 +1,6 @@
-﻿using Domain.Customers.Commands;
+﻿using DataAccess.Response;
+
+using Domain.Customers.Commands;
 using Domain.Customers.Queries;
 using Domain.Interfaces;
 
@@ -6,6 +8,8 @@ using Entities;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using System.Text.RegularExpressions;
 
 namespace WebApi.Controllers
 {
@@ -16,8 +20,16 @@ namespace WebApi.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(CreateCustomerCommand command)
 		{
-			var result = await Mediator.Send(command);			
-			return Ok(result);
+			var isMatch = Regex.IsMatch(command.Email, @"^([\w-\.\+]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+			if (!isMatch)
+			{
+				return Ok(new Result(false, "wrong email"));
+			}
+			else
+			{
+				var result = await Mediator.Send(command);
+				return Ok(result);
+			}
 			
 		}
 		[HttpDelete("{id}")]
@@ -28,9 +40,10 @@ namespace WebApi.Controllers
 		[HttpPut("[action]")]
 		public async Task<IActionResult> Update(int id, UpdateCustomerCommand command)
 		{
-			if (id != command.CustomerId)
+			var isMatch = Regex.IsMatch(command.Email, @"^([\w-\.\+]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+			if (!isMatch)
 			{
-				return BadRequest();
+				return Ok(new Result(false,"wrong email"));
 			}
 			return Ok(await Mediator.Send(command));
 		}
