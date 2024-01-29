@@ -13,15 +13,16 @@ namespace ConsoleClient
 		{
 			var builder = Host.CreateApplicationBuilder();
 			builder.Configuration.AddJsonFile("appsettings.Development.json");
-			builder.Services.AddDbContext<CvDbContext>((sp, op) 
-				=> { op.UseSqlServer(builder.Configuration.GetConnectionString("Default")); });
+			builder.Services.AddDbContext<CvDbContext>((sp, op)
+				=>
+			{ op.UseSqlServer(builder.Configuration.GetConnectionString("Default")); });
 			var host = builder.Build();
 			var db = host.Services.GetRequiredService<CvDbContext>();
-			db.Database.Migrate();
-			Console.WriteLine("Hello, World!");
-			Console.ReadKey();
+			//db.Database.Migrate();
+			//Console.WriteLine("Hello, World!");
+			//Console.ReadKey();
 			db.Customers.Add(new Entities.Customer() { CompanyName = "cm" });
-			var cnt =  db.SaveChanges();
+			var cnt = db.SaveChanges();
 		}
 	}
 }
