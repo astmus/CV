@@ -17,8 +17,7 @@ namespace ConsoleClient
 				=> { op.UseSqlServer(builder.Configuration.GetConnectionString("Default")); });
 			var host = builder.Build();
 			var db = host.Services.GetRequiredService<CvDbContext>();
-			db.Database.Migrate();
-			Console.WriteLine("Hello, World!");
+			db.Database.Migrate();			
 			Console.ReadKey();
 			db.Customers.Add(new Entities.Customer() { CompanyName = "cm" });
 			var cnt =  db.SaveChanges();
